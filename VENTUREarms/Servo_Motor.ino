@@ -20,7 +20,7 @@ void setup() {
 
 void loop() {
   myServo.write(degreeOfMovement);                // sets the servo position according to the set value
-  delay(1000);                                    // waits for the servo to get there
+  delay(5000);                                    // waits for the servo to get there
   myServo.write(0);                               // returns the servo to 0
-  delay(1000);                                    // waits for the servo to get there
+  delay(5000);                                    // waits for the servo to get there
 }
