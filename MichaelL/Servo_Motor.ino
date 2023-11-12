@@ -1,26 +1,54 @@
 /*
-  Purpose: Basic example of a 180deg Micro Servo connected via a Seead Screw Terminal
-  Notes: 
-    1. Connect to a Digital Pin
-    2. 180 Degree ROM 0-180 values
-  Author: Ben Jones 13/7/23
-  Contact: benjmain.jones21@det.nsw.edu.au
-  Source: https://wiki.seeedstudio.com/Grove-Servo/
+  Author: Michael Liondis
+  Learning Intention: The students will learn how to connect and control a servo motor.
+  Success Criteria:
+    1. I understand how to connect the servo motor
+    2. I can manually write different degrees of movement to the servo
+    3. I can map a potentiometer to a servo and control its movement
+    4. I understand that a 180deg servo angle of movement is set by a frequency signal sent from the microcontroller
+
+  Student Notes: 
+
+  Documentation:
+    https://www.sparkfun.com/servos
+    https://github.com/arduino-libraries/Servo <-- We are still using this library
+
+  Schematic:
+    https://www.tinkercad.com/things/lQ9RyYJRoLn?sharecode=MKlN0A7R0WGodkdTRKkPJO7I8PeI5L_GCR7pCclQ0qM
+    https://github.com/TempeHS/TempeHS_Ardunio_Boilerplate/blob/main/Ardunio_Bootcamp/10.servoMotor/Bootcamp-servoMotor.png
 */
 
+
 #include <Servo.h>
+#include "Ultrasonic.h"
 
-Servo myServo;  // create servo object to control a servo
+Servo myServo;
+static unsigned int myServoPin = 7;
+static unsigned int myUSPin = 6;
+unsigned long rangeInCM;
 
-static unsigned int degreeOfMovement = 180;    // variable to read the value from the analog pin
+Ultrasonic myUSsensor(myUSPin);
 
 void setup() {
-  myServo.attach(6);  // attaches the servo on pin 6 to the servo object
+Ultrasonic myUSsensor(myUSPin);
+myServo.attach(myServoPin);
+myServo.write(0);
+delay(100);
+Serial.begin(9600);
+Serial.println("sm working");
+Serial.println("------------------------");
 }
 
+// The loop function runs over and over again forever
 void loop() {
-  myServo.write(degreeOfMovement);                // sets the servo position according to the set value
-  delay(5000);                                    // waits for the servo to get there
-  myServo.write(0);                               // returns the servo to 0
-  delay(5000);                                    // waits for the servo to get there
+
+unsigned long rangeInCM = myUSsensor.MeasureInCentimeters();
+Serial.println(rangeInCM);
+
+if (rangeInCM <=0) {
+openGate ();
+} else {
+closeGate();
+}
+
 }
